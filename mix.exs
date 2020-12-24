@@ -10,6 +10,13 @@ defmodule Poeticoins.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coverals.post": :test,
+        "coverals.html": :test
+      ],
       deps: deps()
     ]
   end
@@ -46,7 +53,8 @@ defmodule Poeticoins.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:gun, "~> 1.3.3"},
       {:cowlib, "~> 2.10.1", override: true},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 
