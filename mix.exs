@@ -17,6 +17,9 @@ defmodule Poeticoins.MixProject do
         "coverals.post": :test,
         "coverals.html": :test
       ],
+      dialyzer: [
+        plt_file: {:no_warn, "plts/dialyzer.plt"}
+      ],
       deps: deps()
     ]
   end
@@ -54,7 +57,8 @@ defmodule Poeticoins.MixProject do
       {:gun, "~> 1.3.3"},
       {:cowlib, "~> 2.10.1", override: true},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.10", only: :test}
+      {:excoveralls, "~> 0.10", only: :test},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
