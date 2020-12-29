@@ -230,3 +230,50 @@ iex(1)> h Trade.new
 
 * Types and their syntax: https://hexdocs.pm/elixir/typespecs.html#types-and-their-syntax
 * Defining a specification: https://hexdocs.pm/elixir/typespecs.html#defining-a-specification
+
+### Message validation
+
+```elixir
+iex -S mix
+Erlang/OTP 23 [erts-11.1.4] [source] [64-bit] [smp:12:12] [ds:12:12:10] [async-threads:1] [hipe]
+
+Interactive Elixir (1.11.2) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)> msg = %{}
+%{}
+iex(2)> alias Poeticoins.Exchanges.CoinbaseClient
+Poeticoins.Exchanges.CoinbaseClient
+iex(3)> CoinbaseClient.message_to_trade(msg)
+{:error, {"product_id", :required}}
+iex(4)> msg = %{"product_id" => "BTC-USD"}
+%{"product_id" => "BTC-USD"}
+iex(5)> CoinbaseClient.message_to_trade(msg)
+{:error, {"time", :required}}
+iex(6)> msg = %{"product_id" => "BTC-USD", "time" => "2020-07-11T18:19:34.767742Z"}
+%{"product_id" => "BTC-USD", "time" => "2020-07-11T18:19:34.767742Z"}
+iex(7)> CoinbaseClient.message_to_trade(msg)
+{:error, {"price", :required}}
+iex(8)> msg = %{"product_id" => "BTC-USD", "time" => "2020-07-11T18:19:34.767742Z", "price" => "9214.08"}
+%{
+  "price" => "9214.08",
+  "product_id" => "BTC-USD",
+  "time" => "2020-07-11T18:19:34.767742Z"
+}
+iex(9)> CoinbaseClient.message_to_trade(msg)
+{:error, {"last_size", :required}}
+iex(10)> msg = %{"product_id" => "BTC-USD", "time" => "2020-07-11T18:19:34.767742Z", "price" => "9214.08", "last_size" => "0.07722245"}
+%{
+  "last_size" => "0.07722245",
+  "price" => "9214.08",
+  "product_id" => "BTC-USD",
+  "time" => "2020-07-11T18:19:34.767742Z"
+}
+iex(11)> CoinbaseClient.message_to_trade(msg)                                                                          %Poeticoins.Trade{
+  price: "9214.08",
+  product: %Poeticoins.Product{
+    currency_pair: "BTC-USD",
+    exchange_name: "coinbase"
+  },
+  traded_at: ~U[2020-07-11 18:19:34.767742Z],
+  volume: "0.07722245"
+}
+```
