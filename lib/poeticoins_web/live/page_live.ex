@@ -1,4 +1,6 @@
 defmodule PoeticoinsWeb.PageLive do
+  @moduledoc false
+
   use PoeticoinsWeb, :live_view
 
   @impl true

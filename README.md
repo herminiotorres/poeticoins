@@ -187,3 +187,46 @@ iex[8]> flush
  {:shutdown, :nxdomain}}
 :ok
 ```
+
+### Typespecs and Dialyzer
+
+
+```elixir
+iex -S mix
+Erlang/OTP 23 [erts-11.1.4] [source] [64-bit] [smp:12:12] [ds:12:12:10] [async-threads:1] [hipe]
+
+Compiling 3 files (.ex)
+Generated poeticoins app
+Interactive Elixir (1.11.2) - press Ctrl+C to exit (type h() ENTER for help)
+iex[1]> alias Poeticoins.{Trade, Product}
+[Poeticoins.Trade, Poeticoins.Product]
+iex[2]> Trade.new product: Product.new("coinbase", "BTC-USD"), traded_at: DateTime.utc_now(), price: "10000", volume: "0.1"
+%Poeticoins.Trade{
+  price: "10000",
+  product: %Poeticoins.Product{
+    currency_pair: "BTC-USD",
+    exchange_name: "coinbase"
+  },
+  traded_at: ~U[2020-12-28 12:19:50.934852Z],
+  volume: "0.1"
+}
+```
+
+Create the `.iex.exs` with this both alias.
+
+```elixir
+iex -S mix
+Erlang/OTP 23 [erts-11.1.4] [source] [64-bit] [smp:12:12] [ds:12:12:10] [async-threads:1] [hipe]
+
+Interactive Elixir (1.11.2) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)> h Trade.new
+
+                                def new(fields)
+
+  @spec new(Keyword.t()) :: t()
+
+
+```
+
+* Types and their syntax: https://hexdocs.pm/elixir/typespecs.html#types-and-their-syntax
+* Defining a specification: https://hexdocs.pm/elixir/typespecs.html#defining-a-specification
